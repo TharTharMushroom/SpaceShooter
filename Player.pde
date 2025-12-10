@@ -3,7 +3,7 @@ class Player{
   float y;
   float xVel=0;
   float yVel=0;
-  float friction = 0.92;
+  float friction = 0.9;
   public Player(float x, float y){
     this.x=x;
     this.y=y;
@@ -18,6 +18,14 @@ class Player{
     yVel *= friction;
     x+=xVel;
     y+=yVel;
+  }
+  
+  public float getX(){
+    return x;
+  }
+  
+  public float getY(){
+    return y;
   }
   
   public void changeX(float change){

@@ -1,3 +1,5 @@
+import java.util.*;
+ArrayList<Projectile> projs = new ArrayList<Projectile>();
 Player p;
 boolean leftKey, rightKey, upKey, downKey;
 void setup() {
@@ -7,12 +9,13 @@ void setup() {
 
 void draw(){
   background(0);
-  updateMovement();
+  updatePlayerMovement();
+  updateProjectiles();
   p.update();
   p.drawPlayer();
 }
 
-void updateMovement(){
+void updatePlayerMovement(){
   if(upKey){
     p.changeY(-1);
   }
@@ -24,6 +27,13 @@ void updateMovement(){
   }
   if(rightKey){
     p.changeX(1);
+  }
+}
+
+void updateProjectiles(){
+  for(int i = 0; i<projs.size();i++){
+    projs.get(i).update();
+    projs.get(i).drawProj();
   }
 }
 
@@ -42,7 +52,11 @@ void keyPressed(){
       rightKey = true;
     }
   }
+  if(key == 'a' || key == 'A'){
+    projs.add(new Projectile(p.getX(), p.getY(), 0.0));
+  }
 }
+
 void keyReleased(){
   if (key == CODED) {
     if (keyCode == UP) {
