@@ -3,12 +3,13 @@ class Projectile{
   float y;
   float xVel;
   float yVel;
-  float speed = 3;
+  float speed;
   float angle;
-  public Projectile(float x, float y, float angle){
+  public Projectile(float x, float y, float angle, float speed){
     this.x=x;
     this.y=y;
     this.angle=radians(angle);
+    this.speed=speed;
   }
   
   public void drawProj(){

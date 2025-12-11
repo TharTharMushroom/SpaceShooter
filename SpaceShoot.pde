@@ -1,5 +1,4 @@
 import java.util.*;
-ArrayList<Projectile> projs = new ArrayList<Projectile>();
 Player p;
 boolean leftKey, rightKey, upKey, downKey;
 void setup() {
@@ -10,9 +9,11 @@ void setup() {
 void draw(){
   background(0);
   updatePlayerMovement();
-  updateProjectiles();
   p.update();
   p.drawPlayer();
+  p.updateProjectiles();
+  p.updateBeams();
+  
 }
 
 void updatePlayerMovement(){
@@ -30,12 +31,7 @@ void updatePlayerMovement(){
   }
 }
 
-void updateProjectiles(){
-  for(int i = 0; i<projs.size();i++){
-    projs.get(i).update();
-    projs.get(i).drawProj();
-  }
-}
+
 
 void keyPressed(){
   if (key == CODED) {
@@ -53,7 +49,10 @@ void keyPressed(){
     }
   }
   if(key == 'a' || key == 'A'){
-    projs.add(new Projectile(p.getX(), p.getY(), 0.0));
+    p.addProj(new Projectile(p.getX(), p.getY(), 20.0, 4));
+  }
+  if(key == 'b' || key == 'B'){
+    p.addBeam(new Beam(p.getX(), p.getY(), 20, 20));
   }
 }
 
