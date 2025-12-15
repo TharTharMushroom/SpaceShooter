@@ -47,16 +47,22 @@ class Player{
   }
   
   public void updateProjectiles(){
-  for(int i = 0; i<projs.size();i++){
-    projs.get(i).update();
-    projs.get(i).drawProj();
+    for(int i = projs.size()-1; i>=0;i--){
+      projs.get(i).update();
+      projs.get(i).drawProj();
+      if(projs.get(i).beamDur()<0){
+        beams.remove(i);
+      }
+    }
   }
-}
 
-public void updateBeams(){
-  for(int i = 0; i<beams.size();i++){
-    beams.get(i).update(p.getX(), p.getY());
-    beams.get(i).drawBeam();
+  public void updateBeams(){
+    for(int i = beams.size()-1; i>=0;i--){
+      beams.get(i).update(p.getX(), p.getY());
+      beams.get(i).drawBeam();
+      if(beams.get(i).beamDur()<0){
+        beams.remove(i);
+      }
+    }
   }
-}
 }

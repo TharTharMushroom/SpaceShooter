@@ -52,7 +52,7 @@ void keyPressed(){
     p.addProj(new Projectile(p.getX(), p.getY(), 20.0, 4));
   }
   if(key == 'b' || key == 'B'){
-    p.addBeam(new Beam(p.getX(), p.getY(), 20, 20));
+    p.addBeam(new Beam(p.getX(), p.getY(), 20, 15));
   }
 }
 
