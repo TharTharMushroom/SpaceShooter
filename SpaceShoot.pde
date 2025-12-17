@@ -3,7 +3,7 @@ Player p;
 boolean leftKey, rightKey, upKey, downKey;
 void setup() {
   size(960, 540);
-  p = new Player(50,50);
+  p = new Player(50,50,50,50);
 }
 
 void draw(){
@@ -49,7 +49,7 @@ void keyPressed(){
     }
   }
   if(key == 'a' || key == 'A'){
-    p.addProj(new Projectile(p.getX(), p.getY(), 20.0, 4));
+    p.shootProj();
   }
   if(key == 'b' || key == 'B'){
     p.addBeam(new Beam(p.getX(), p.getY(), 20, 15));
