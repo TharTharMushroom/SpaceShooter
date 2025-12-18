@@ -35,4 +35,11 @@ class Projectile{
     return y;
   }
   
+  public boolean checkCollision(float checkX, float checkY, float checkWide, float checkHigh){
+    if((checkX + checkWide >= x-wide && checkX+checkWide <= x + wide) && (checkY + checkHigh >= y - high && checkHigh <= y + high)){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }

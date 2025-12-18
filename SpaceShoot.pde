@@ -1,9 +1,12 @@
 import java.util.*;
 Player p;
-boolean leftKey, rightKey, upKey, downKey;
+boolean leftKey, rightKey, upKey, downKey, shootKey;
+ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 void setup() {
   size(960, 540);
-  p = new Player(50,50,50,50);
+  p = new Player(50,50,50,50,10);
+  enemies.add(new Enemy(500, 250, 30, 30, 100));
+  rectMode(CENTER);
 }
 
 void draw(){
@@ -11,6 +14,7 @@ void draw(){
   updatePlayerMovement();
   p.update();
   p.drawPlayer();
+  updateEnemies();
   p.updateProjectiles();
   p.updateBeams();
   
@@ -29,9 +33,19 @@ void updatePlayerMovement(){
   if(rightKey){
     p.changeX(1);
   }
+  if(shootKey){
+    p.shootProj();
+  }
 }
 
-
+public void updateEnemies(){
+    for(int i = enemies.size()-1; i>=0;i--){
+      enemies.get(i).drawEnemy();
+      if(enemies.get(i).getHP()<0){
+        enemies.remove(i);
+      }
+    }
+  }
 
 void keyPressed(){
   if (key == CODED) {
@@ -49,7 +63,7 @@ void keyPressed(){
     }
   }
   if(key == 'a' || key == 'A'){
-    p.shootProj();
+    shootKey = true;
   }
   if(key == 'b' || key == 'B'){
     p.addBeam(new Beam(p.getX(), p.getY(), 20, 15));
@@ -70,5 +84,8 @@ void keyReleased(){
     if (keyCode == RIGHT) {
       rightKey = false;
     }
+  }
+  if(key == 'a' || key == 'A'){
+    shootKey = false;
   }
 }

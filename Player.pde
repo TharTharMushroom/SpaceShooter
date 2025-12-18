@@ -10,11 +10,12 @@ class Player{
   int totalShootCooldown;
   ArrayList<Projectile> projs = new ArrayList<Projectile>();
   ArrayList<Beam> beams = new ArrayList<Beam>();
-  public Player(float x, float y, float wide, float high){
+  public Player(float x, float y, float wide, float high, int totalShootCooldown){
     this.x=x;
     this.y=y;
     this.wide=wide;
     this.high=high;
+    this.totalShootCooldown=totalShootCooldown;
   }
   
   public void drawPlayer(){
@@ -32,24 +33,24 @@ class Player{
   
   public void shootProj(){
     if(shootCooldown<=0){
-      p.addProj(new Projectile(p.getX(), p.getY(), 10, 10, 0, 4));
-      shootCooldown = 
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 4));
+      shootCooldown = totalShootCooldown;
     }
   }
   
   
   public void stayInScreen(){
-    if(x<0){
-      x=0;
+    if(x<wide/2){
+      x=wide/2;
     }
-    if(x>width-wide){
-      x=width-wide;
+    if(x>width-wide/2){
+      x=width-wide/2;
     }
-    if(y<0){
-      y=0;
+    if(y<high/2){
+      y=high/2;
     }
-    if(y>height-high){
-      y=height-high;
+    if(y>height-high/2){
+      y=height-high/2;
     }
   }
   
@@ -59,6 +60,14 @@ class Player{
   
   public float getY(){
     return y;
+  }
+  
+  public float getWide(){
+    return wide;
+  }
+  
+  public float getHigh(){
+    return high;
   }
   
   public int getShootCD(){
@@ -71,10 +80,6 @@ class Player{
   
   public void changeY(float change){
     yVel += change;
-  }
-  
-  public void addProj(Projectile proj){
-    projs.add(proj);
   }
   
   public void addBeam(Beam beam){
@@ -92,12 +97,14 @@ class Player{
   }
 
   public void updateBeams(){
+    rectMode(CORNER);
     for(int i = beams.size()-1; i>=0;i--){
-      beams.get(i).update(p.getX(), p.getY());
+      beams.get(i).update(getX(), getY());
       beams.get(i).drawBeam();
       if(beams.get(i).beamDur()<0){
         beams.remove(i);
       }
     }
+    rectMode(CENTER);
   }
 }
