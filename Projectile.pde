@@ -7,13 +7,15 @@ class Projectile{
   float yVel;
   float speed;
   float angle;
-  public Projectile(float x, float y, float wide, float high, float angle, float speed){
+  int damage;
+  public Projectile(float x, float y, float wide, float high, float angle, float speed, int damage){
     this.x=x;
     this.y=y;
     this.wide=wide;
     this.high=high;
     this.angle=radians(angle);
     this.speed=speed;
+    this.damage=damage;
   }
   
   public void drawProj(){
@@ -27,6 +29,10 @@ class Projectile{
     y+=yVel;
   }
   
+  public int getDamage(){
+    return damage;
+  }
+  
   public float getX(){
     return x;
   }
@@ -36,7 +42,7 @@ class Projectile{
   }
   
   public boolean checkCollision(float checkX, float checkY, float checkWide, float checkHigh){
-    if((checkX + checkWide >= x-wide && checkX+checkWide <= x + wide) && (checkY + checkHigh >= y - high && checkHigh <= y + high)){
+    if(x+wide/2 > checkX - checkWide/2 && x-wide/2 < checkX + checkWide/2 && y+high/2 > checkY - checkHigh/2 && y-high/2 < checkY + checkHigh/2){
       return true;
     }else{
       return false;

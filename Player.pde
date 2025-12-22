@@ -33,7 +33,7 @@ class Player{
   
   public void shootProj(){
     if(shootCooldown<=0){
-      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 4));
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 8, 10));
       shootCooldown = totalShootCooldown;
     }
   }
@@ -84,6 +84,19 @@ class Player{
   
   public void addBeam(Beam beam){
     beams.add(beam);
+  }
+  
+  public void updateCollisions(ArrayList<Enemy> enemies){
+    for(int i = projs.size()-1; i>=0; i--){
+       for(int j = enemies.size()-1; j>=0; j--){
+         Enemy ene = enemies.get(j);
+         if(projs.get(i).checkCollision(ene.getX(), ene.getY(), ene.getWide(), ene.getHigh())){
+           enemies.get(j).changeHP(projs.get(i).getDamage());
+           projs.remove(i);
+           break;
+         }
+      }
+    }
   }
   
   public void updateProjectiles(){

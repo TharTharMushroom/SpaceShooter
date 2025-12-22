@@ -6,6 +6,7 @@ void setup() {
   size(960, 540);
   p = new Player(50,50,50,50,10);
   enemies.add(new Enemy(500, 250, 30, 30, 100));
+  enemies.add(new Enemy(700, 350, 70, 50, 200));
   rectMode(CENTER);
 }
 
@@ -17,7 +18,7 @@ void draw(){
   updateEnemies();
   p.updateProjectiles();
   p.updateBeams();
-  
+  p.updateCollisions(enemies);
 }
 
 void updatePlayerMovement(){
