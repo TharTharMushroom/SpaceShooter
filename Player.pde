@@ -7,15 +7,18 @@ class Player{
   float yVel=0;
   float friction = 0.9;
   int shootCooldown = 0;
+  int superCooldown = 0;
   int totalShootCooldown;
+  int totalSuperCooldown;
   ArrayList<Projectile> projs = new ArrayList<Projectile>();
   ArrayList<Beam> beams = new ArrayList<Beam>();
-  public Player(float x, float y, float wide, float high, int totalShootCooldown){
+  public Player(float x, float y, float wide, float high, int totalShootCooldown, int totalSuperCooldown){
     this.x=x;
     this.y=y;
     this.wide=wide;
     this.high=high;
     this.totalShootCooldown=totalShootCooldown;
+    this.totalSuperCooldown=totalSuperCooldown;
   }
   
   public void drawPlayer(){
@@ -24,6 +27,7 @@ class Player{
   
   public void update(){
     shootCooldown -= 1;
+    superCooldown -= 1;
     xVel *= friction;
     yVel *= friction;
     x+=xVel;
@@ -35,6 +39,13 @@ class Player{
     if(shootCooldown<=0){
       projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 8, 10));
       shootCooldown = totalShootCooldown;
+    }
+  }
+  
+  public void shootSuper(){
+    if(superCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 50, 50, 0, 10, 45));
+      superCooldown = totalSuperCooldown;
     }
   }
   
@@ -120,4 +131,51 @@ class Player{
     }
     rectMode(CENTER);
   }
+}
+
+class Red extends Player{
+  
+  Red(){
+    super(10, 10, 40, 40, 15, 200);
+  }
+  
+  public void drawPlayer(){
+    fill(255, 0, 0);
+    rect(x,y,wide,high);
+    fill(255);
+  }
+  
+  public void shootProj(){
+    if(shootCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, -20, 6, 4));
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 6, 4));
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 20, 6, 4));
+      shootCooldown = totalShootCooldown;
+    }
+  }
+  
+  public void shootSuper(){
+    if(superCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, -40, 9, 10));
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, -20, 9, 10));
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, 0, 9, 10));
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, 20, 9, 10));
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, 40, 9, 10));
+      superCooldown = totalSuperCooldown;
+    }
+  }
+}
+
+class Blue extends Player{
+  
+  Blue(){
+    super(10, 10, 40, 40, 8, 200);
+  }
+  
+  public void drawPlayer(){
+    fill(0, 0, 255);
+    rect(x,y,wide,high);
+    fill(255);
+  }
+  
 }
