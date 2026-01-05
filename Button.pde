@@ -4,26 +4,35 @@ class Button{
   float high;
   float wide;
   int next;
-  boolean sceneButton;
-  public Button(float x, float y, float wide, float high, int next, boolean sceneButton){
+  int purpose;
+  color c;
+  public Button(float x, float y, float wide, float high, int next, int purpose, color c){
     this.x=x;
     this.y=y;
     this.wide=wide;
     this.high=high;
     this.next=next;
-    this.sceneButton=sceneButton;
+    this.purpose=purpose;
+    this.c=c;
   }
   
   public void drawButton(){
+    fill(c);
     rect(x, y, wide, high);
+    fill(255);
   }
   
-  public boolean isSceneButton(){
-    return sceneButton;
+  // 1 change scene, 2 change character, 3 char one, 4 char 2
+  public int getPurpose(){
+    return purpose;
   }
   
   public int getNext(){
     return next;
+  }
+  
+  public void colorChange(color col){
+    c=col;
   }
   
   public boolean checkCollision(){

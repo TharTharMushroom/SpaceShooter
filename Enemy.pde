@@ -8,6 +8,7 @@ class Enemy{
   int hp;
   int shootCooldown;
   int totalShootCooldown;
+  
   public Enemy(float x, float y, float wide, float high, int hp, int totalShootCooldown){
     this.x=x;
     this.y=y;
@@ -17,8 +18,13 @@ class Enemy{
     this.totalShootCooldown=totalShootCooldown;
     this.shootCooldown=totalShootCooldown;
   }
+  
   public void drawEnemy(){
     rect(x,y,wide,high);
+  }
+  
+  public void onDefeat(){
+    //empty
   }
   
   public EnemyProj shootProj(EnemyProj proj){
@@ -39,18 +45,23 @@ class Enemy{
   public void changeHP(int dmg){
     hp -= dmg;
   }
+  
   public int getHP(){
     return hp;
   }
+  
   public float getX(){
     return x;
   }
+  
   public float getY(){
     return y;
   }
+  
   public float getWide(){
     return wide;
   }
+  
   public float getHigh(){
     return high;
   }

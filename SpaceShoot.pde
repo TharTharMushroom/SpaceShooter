@@ -1,10 +1,12 @@
 import java.util.*;
 Player p1, p2, p;
+// red, blue
+int p1Select, p2Select = 0;
 boolean leftKey, rightKey, upKey, downKey, shootKey, superKey, switchKey;
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 ArrayList<EnemyProj> enemyProjs = new ArrayList<EnemyProj>();
 ArrayList<Button> buttons = new ArrayList<Button>();
-int playerHP = 5;
+int playerHP;
 int immuneCD = 0;
 int currPlayer = 1;
 int switchCD = 0;
@@ -29,6 +31,9 @@ void draw(){
     updateEnemyProjectiles();
     text(playerHP, 40, 40); 
     text(frameRate, 80, 80);
+    if(playerHP<=0){
+      playerEndLevel(false);
+    }
   }
   updateButtons();
 }
@@ -39,24 +44,111 @@ public void updateButtons(){
   }
 }
 
+public void playerEndLevel(boolean win){
+  inCombat = false;
+  enemies.clear();
+  enemyProjs.clear();
+  if(win){
+    currentScene = 4;
+  }else{
+    currentScene = 5;
+  }
+  rewriteScene();
+}
+
 public void startCombat(){
-  inCombat = true;
-  p1 = new Blue();
-  p2 = new Red();
-  enemies.add(new Enemy(500, 250, 30, 30, 100, 60));
-  enemies.add(new Enemy(700, 350, 70, 50, 200, 100));
+  playerHP = 5;
+  if(assignCharacters()){
+    inCombat = true;
+    enemies.add(new Enemy(500, 250, 30, 30, 100, 60));
+    enemies.add(new Enemy(700, 350, 70, 50, 200, 100));
+  }
+}
+
+public boolean assignCharacters(){
+  switch(p1Select){
+    case 1: p1 = new Red(); break;
+    case 2: p1 = new Blue(); break;
+    case 3: p1 = new Green(); break;
+    case 4: p1 = new Yellow(); break;
+    default: p1 = null; currentScene=3; rewriteScene(); break;
+  }
+  switch(p2Select){
+    case 1: p2 = new Red(); break;
+    case 2: p2 = new Blue(); break;
+    case 3: p2 = new Green(); break;
+    case 4: p2 = new Yellow(); break;
+    default: p2 = null; currentScene=3; rewriteScene(); break;
+  }
+  if(p1!=null&&p2!=null){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 public void rewriteScene(){
   buttons.clear();
   switch(currentScene){
+    // 0 - starts combat
     case 0: startCombat(); break;
-    case 1: buttons.add(new Button(300, 300, 50, 50, 0, true));
-            buttons.add(new Button(400, 400, 50, 80, 2, true));
+    // 1 - home screen
+    case 1: buttons.add(new Button(300, 300, 50, 50, 3, 1, color(100,100,0)));
+            buttons.add(new Button(400, 400, 50, 80, 2, 1, color(255,255,255)));
             break;
-    case 2: buttons.add(new Button(600, 400, 50, 50, 1, true));
+    // 2 - character info
+    case 2: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
             break;
+    // 3 character select
+    case 3: characterSelectButtons(); 
+            buttons.add(new Button(230, 250, 200, 400, 0, 3, color(255,255,255))); 
+            buttons.add(new Button(430, 250, 200, 400, 0, 4, color(255,255,255)));
+            buttons.add(new Button(100, 100, 50, 50, 1, 1, color(255,255,255))); 
+            buttons.add(new Button(100, 160, 50, 50, 0, 1, color(255,255,255)));
+            playerPicturesChange();
+            break;
+     // 4 win level
+     case 4: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
+     // 5 lose level
+     case 5: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
     default: print("Something went wrong");break;
+  }
+}
+
+public void characterSelectButtons(){
+    buttons.add(new Button(640, 180, 50, 50, 1, 2, color(255,0,0)));
+    buttons.add(new Button(690, 180, 50, 50, 2, 2, color(0,0,255)));
+    buttons.add(new Button(740, 180, 50, 50, 3, 2, color(0,255,0)));
+    buttons.add(new Button(640, 230, 50, 50, 4, 2, color(255,255,0)));
+}
+
+public void playerSelectChange(int in){
+  if(p1Select==0&&in!=p2Select){
+    p1Select=in;
+  }else if(p2Select==0&&in!=p1Select){
+    p2Select=in;
+  }
+  playerPicturesChange();
+}
+
+public void playerPicturesChange(){
+  for(int j = buttons.size()-1; j>=0;j--){
+    if(buttons.get(j).getPurpose()==3){
+      buttons.get(j).colorChange(getPlayerColor(p1Select));
+    }else if(buttons.get(j).getPurpose()==4){
+      buttons.get(j).colorChange(getPlayerColor(p2Select));
+    } 
+  }
+}
+
+public color getPlayerColor(int in){
+  switch(in){
+    case 0: return color(255,255,255);
+    case 1: return color(255,0,0);
+    case 2: return color(0,0,255);
+    case 3: return color(0,255,0);
+    case 4: return color(255,255,0);
+    default: return color(255, 255, 255);
   }
 }
 
@@ -196,11 +288,17 @@ void keyReleased(){
 void mousePressed(){
   for(int i = buttons.size()-1; i>=0;i--){
     if(buttons.get(i).checkCollision()){
-      if(buttons.get(i).isSceneButton()){
+      if(buttons.get(i).getPurpose()==1){
         currentScene = buttons.get(i).getNext();
         rewriteScene();
-      }else{
-        
+      }else if(buttons.get(i).getPurpose()==2){
+        playerSelectChange(buttons.get(i).getNext());
+      }else if(buttons.get(i).getPurpose()==3){
+        p1Select=0;
+        playerPicturesChange();
+      }else if(buttons.get(i).getPurpose()==4){
+        p2Select=0;
+        playerPicturesChange();
       }
       break;
     }

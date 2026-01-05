@@ -178,4 +178,76 @@ class Blue extends Player{
     fill(255);
   }
   
+  public void shootProj(){
+    if(shootCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 10, 10, 0, 8, 10));
+      shootCooldown = totalShootCooldown;
+    }
+  }
+  
+  public void shootSuper(){
+    if(superCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 50, 50, 0, 10, 45));
+      superCooldown = totalSuperCooldown;
+    }
+  }
+}
+
+class Green extends Player{
+  int enhancedAmmo = 0;
+  Green(){
+    super(10, 10, 40, 40, 5, 150);
+  }
+  
+  public void drawPlayer(){
+    fill(0, 255, 0);
+    rect(x,y,wide,high);
+    fill(255);
+  }
+  
+  public void shootProj(){
+    if(shootCooldown<=0){
+      if(enhancedAmmo>0){
+        enhancedAmmo--;
+        projs.add(new Projectile(p.getX(), p.getY(), 25, 25, random(-5,5), 9, 10));
+      }else{
+        projs.add(new Projectile(p.getX(), p.getY(), 10, 10, random(-10,10), 7, 5));
+      }
+      shootCooldown = totalShootCooldown;
+    }
+  }
+  
+  public void shootSuper(){
+    if(superCooldown<=0){
+      enhancedAmmo=10;
+      superCooldown = totalSuperCooldown;
+    }
+  }
+}
+
+class Yellow extends Player{
+  
+  Yellow(){
+    super(10, 10, 40, 40, 30, 250);
+  }
+  
+  public void drawPlayer(){
+    fill(255, 255, 0);
+    rect(x,y,wide,high);
+    fill(255);
+  }
+  
+  public void shootProj(){
+    if(shootCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 30, 30, 0, 8, 30));
+      shootCooldown = totalShootCooldown;
+    }
+  }
+  
+  public void shootSuper(){
+    if(superCooldown<=0){
+      projs.add(new Projectile(p.getX(), p.getY(), 100, 100, 0, 4, 150));
+      superCooldown = totalSuperCooldown;
+    }
+  }
 }
