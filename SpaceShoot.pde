@@ -5,6 +5,7 @@ int p1Select, p2Select = 0;
 boolean leftKey, rightKey, upKey, downKey, shootKey, superKey, switchKey;
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 ArrayList<EnemyProj> enemyProjs = new ArrayList<EnemyProj>();
+ArrayList<Enemy> waveList = new ArrayList<Enemy>();
 ArrayList<Button> buttons = new ArrayList<Button>();
 int playerHP;
 int immuneCD = 0;
@@ -25,6 +26,7 @@ void setup() {
 void draw(){
   background(0);
   if(inCombat){
+    checkWaves();
     updatePlayerMovement();
     playersUpdates();
     updateEnemies();
@@ -56,12 +58,40 @@ public void playerEndLevel(boolean win){
   rewriteScene();
 }
 
+public void checkWaves(){
+  if(enemies.size()==0){
+    if(waveList.size()==0){
+      playerEndLevel(true);
+    }else{
+      newWave();
+    }
+  }
+}
+
+public void newWave(){
+  while(waveList.size()>0){
+    if(waveList.get(0)!=null){
+      enemies.add(waveList.get(0));
+      waveList.remove(0);
+    }else{
+      waveList.remove(0);
+      break;
+    }
+  }
+}
+
 public void startCombat(){
   playerHP = 5;
   if(assignCharacters()){
     inCombat = true;
-    enemies.add(new Enemy(500, 250, 30, 30, 100, 60));
-    enemies.add(new Enemy(700, 350, 70, 50, 200, 100));
+    waveList.add(new BasicEnemy(800, 100));
+    waveList.add(null);
+    waveList.add(new BasicEnemy(850, 400));
+    waveList.add(new BasicEnemy(750, 200));
+    waveList.add(null);
+    waveList.add(new BasicEnemy(800, 100));
+    waveList.add(new BasicEnemy(800, 500));
+    waveList.add(new BasicEnemy(800, 300));
   }
 }
 
@@ -108,9 +138,9 @@ public void rewriteScene(){
             playerPicturesChange();
             break;
      // 4 win level
-     case 4: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
+     case 4: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));break;
      // 5 lose level
-     case 5: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
+     case 5: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));break;
     default: print("Something went wrong");break;
   }
 }
