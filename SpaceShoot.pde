@@ -20,6 +20,7 @@ void setup() {
   size(960, 540);
   textSize(30);
   rectMode(CENTER);
+  textAlign(CENTER);
   rewriteScene();
 }
 
@@ -83,6 +84,8 @@ public void newWave(){
 public void startCombat(){
   playerHP = 5;
   if(assignCharacters()){
+    enemies.clear();
+    waveList.clear();
     inCombat = true;
     waveList.add(new BasicEnemy(800, 100));
     waveList.add(null);
@@ -123,33 +126,34 @@ public void rewriteScene(){
     // 0 - starts combat
     case 0: startCombat(); break;
     // 1 - home screen
-    case 1: buttons.add(new Button(300, 300, 50, 50, 3, 1, color(100,100,0)));
-            buttons.add(new Button(400, 400, 50, 80, 2, 1, color(255,255,255)));
+    case 1: buttons.add(new Button(480, 200, 480, 60, 3, 1, color(61, 181, 255),"Start"));
+            //buttons.add(new Button(400, 400, 50, 80, 2, 1, color(255,255,255),""));
             break;
     // 2 - character info
-    case 2: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));
+    case 2: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255),""));
             break;
     // 3 character select
-    case 3: characterSelectButtons(); 
-            buttons.add(new Button(230, 250, 200, 400, 0, 3, color(255,255,255))); 
-            buttons.add(new Button(430, 250, 200, 400, 0, 4, color(255,255,255)));
-            buttons.add(new Button(100, 100, 50, 50, 1, 1, color(255,255,255))); 
-            buttons.add(new Button(100, 160, 50, 50, 0, 1, color(255,255,255)));
+    case 3: characterSelectButtons(600, 180); 
+            buttons.add(new Button(480, 50, 600, 50, 0, 0, color(255, 61, 61),"Select two characters"));
+            buttons.add(new Button(230, 270, 200, 350, 0, 3, color(255,255,255),"")); 
+            buttons.add(new Button(430, 270, 200, 350, 0, 4, color(255,255,255),""));
+            buttons.add(new Button(320, 490, 300, 60, 1, 1, color(61, 181, 255),"Back")); 
+            buttons.add(new Button(640, 490, 300, 60, 0, 1, color(61, 181, 255),"Begin"));
             playerPicturesChange();
             break;
      // 4 win level
-     case 4: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));break;
+     case 4: buttons.add(new Button(480, 200, 480, 60, 1, 1, color(61, 181, 255),"You Won!"));break;
      // 5 lose level
-     case 5: buttons.add(new Button(600, 400, 50, 50, 1, 1, color(255,255,255)));break;
+     case 5: buttons.add(new Button(480, 200, 480, 60, 1, 1, color(61, 181, 255),"You Lost..."));break;
     default: print("Something went wrong");break;
   }
 }
 
-public void characterSelectButtons(){
-    buttons.add(new Button(640, 180, 50, 50, 1, 2, color(255,0,0)));
-    buttons.add(new Button(690, 180, 50, 50, 2, 2, color(0,0,255)));
-    buttons.add(new Button(740, 180, 50, 50, 3, 2, color(0,255,0)));
-    buttons.add(new Button(640, 230, 50, 50, 4, 2, color(255,255,0)));
+public void characterSelectButtons(int x, int y){
+    buttons.add(new Button(x, y, 50, 50, 1, 2, color(255,0,0),""));
+    buttons.add(new Button(x+50, y, 50, 50, 2, 2, color(0,0,255),""));
+    buttons.add(new Button(x+100, y, 50, 50, 3, 2, color(0,255,0),""));
+    buttons.add(new Button(x, y+50, 50, 50, 4, 2, color(255,255,0),""));
 }
 
 public void playerSelectChange(int in){
